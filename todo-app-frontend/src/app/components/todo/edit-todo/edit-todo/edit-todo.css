@@ -1,0 +1,155 @@
+ .edit-todo-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 30px 20px 50px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.94) 0%, rgba(242,248,255,0.95) 100%);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 20px 45px rgba(15, 58, 102, 0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      margin: 0 0 30px;
+      color: #1f2937;
+      font-size: 28px;
+    }
+
+    .error-banner {
+      background: #fee;
+      color: #c00;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #9ca3af;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .checkbox-group {
+      flex-direction: row;
+      gap: 12px;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #667eea;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      padding: 12px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: rgba(255,255,255,0.85);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    }
+
+    input.error,
+    textarea.error {
+      border-color: #c00;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .error-message {
+      color: #c00;
+      font-size: 12px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .btn-submit {
+      flex: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      background: #f3f4f6;
+      color: #666;
+    }
+
+    .btn-cancel:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .btn-cancel:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
