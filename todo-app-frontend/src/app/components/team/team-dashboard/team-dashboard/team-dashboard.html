@@ -4,7 +4,7 @@
   
   <!-- Header -->
   <div class="header">
-    <h1>My Teams</h1>
+    <h1>Shared Teams</h1>
     <button 
       class="btn btn-primary"
       (click)="showCreateForm = !showCreateForm"
@@ -61,9 +61,7 @@
     <div *ngFor="let team of teams()" class="team-card">
       <div class="card-header">
         <h3>{{ team.name }}</h3>
-        <span class="role-badge" [ngClass]="{ owner: team.role === 'owner' || team.isOwner }">
-          {{ (team.role === 'owner' || team.isOwner) ? 'OWNER' : (team.role || 'MEMBER') }}
-        </span>
+        <span class="role-badge">SHARED</span>
       </div>
       
       <p class="description">{{ team.description || 'No description' }}</p>
@@ -77,7 +75,6 @@
         </button>
         
         <button 
-          *ngIf="team.role === 'owner' || team.isOwner"
           class="btn btn-danger"
           (click)="deleteTeam(team._id, team.name)"
           [disabled]="loading()">

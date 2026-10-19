@@ -26,12 +26,12 @@ const todoSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    default: null
   },
   teamId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Team',
-    default: null  // null = personal todo, set = team todo
+    default: null
   },
   createdAt: {
     type: Date,

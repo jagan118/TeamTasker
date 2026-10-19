@@ -19,7 +19,7 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           class="nav-link">
-          📋 My Todos
+          📋 Shared Todos
         </a>
       </li>
       
@@ -34,16 +34,8 @@
       </li>
     </ul>
     
-    <!-- User Info & Logout -->
     <div class="user-section">
-      <div class="user-info">
-        <span class="user-name">👤 {{ currentUser?.name }}</span>
-      </div>
-      <button 
-        (click)="logout()" 
-        class="btn-logout">
-        Logout
-      </button>
+      <span class="user-name">Public shared demo — anyone can view, change, or delete data</span>
     </div>
     
   </div>

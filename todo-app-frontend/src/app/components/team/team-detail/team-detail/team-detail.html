@@ -14,11 +14,9 @@
       <div class="team-info">
         <h1>{{ team()?.name }}</h1>
         <p class="description">{{ team()?.description }}</p>
-        <p class="owner-info">👤 Owner: <strong>{{ team()?.owner?.name }}</strong></p>
+        <p class="owner-info">👤 Shared public demo team</p>
       </div>
-      <div class="your-role" [ngClass]="{ owner: isOwner() }">
-        {{ yourRole() | uppercase }}
-      </div>
+      <div class="your-role">SHARED</div>
     </div>
     
     <!-- Messages -->
@@ -30,67 +28,6 @@
     <div *ngIf="error()" class="alert alert-error">
       <span>❌ {{ error() }}</span>
       <button (click)="error.set('')" class="close-btn">×</button>
-    </div>
-    
-    <!-- Invite Section -->
-    <div *ngIf="isOwner()" class="invite-section">
-      <button 
-        class="btn btn-primary"
-        (click)="showInviteForm = !showInviteForm">
-        {{ showInviteForm ? 'Cancel' : '+ Invite Member' }}
-      </button>
-    </div>
-    
-    <!-- Invite Form -->
-    <div *ngIf="showInviteForm && isOwner()" class="card invite-form">
-      <h3>Invite Team Member</h3>
-      
-      <div class="form-group">
-        <label>Email Address *</label>
-        <input 
-          type="email"
-          [(ngModel)]="inviteEmail"
-          placeholder="colleague@example.com"
-          class="form-control">
-      </div>
-      
-      <button 
-        (click)="inviteMember()" 
-        class="btn btn-success">
-        Send Invite
-      </button>
-    </div>
-    
-    <!-- Members Section -->
-    <div class="members-section">
-      <h2>Team Members ({{ members().length }})</h2>
-      
-      <div *ngIf="members().length > 0" class="members-list">
-        <div *ngFor="let member of members()" class="member-card">
-          <div class="member-info">
-            <h4>{{ member.name }}</h4>
-            <p class="email">{{ member.email }}</p>
-            <small class="joined">Joined: {{ member.joinedAt | date:'short' }}</small>
-          </div>
-          
-          <div class="member-actions">
-            <span class="role-badge" [ngClass]="{ owner: member.role === 'owner' }">
-              {{ member.role | uppercase }}
-            </span>
-            
-            <button 
-              *ngIf="isOwner() && member.role !== 'owner'"
-              class="btn btn-danger btn-sm"
-              (click)="removeMember(member.userId, member.name)">
-              Remove
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div *ngIf="members().length === 0" class="empty-members">
-        <p>No members yet</p>
-      </div>
     </div>
     
     <!-- Team Todos Section -->
@@ -119,12 +56,8 @@
             {{ todo.description }}
           </p>
           <div class="todo-meta-row">
-            <span>Created by {{ todo.user?.name || 'you' }}</span>
+            <span>Shared public demo</span>
             <span *ngIf="todo.dueDate">Due {{ todo.dueDate | date:'shortDate' }}</span>
-          </div>
-          <div class="todo-meta-row">
-            <span>{{ todo.completed ? 'Completed' : 'Pending' }}</span>
-            <span>{{ todo.completed ? 'Completed by team member' : 'Waiting for completion' }}</span>
           </div>
           <div class="todo-links">
             <a [routerLink]="['/todos', todo._id, 'edit']" class="link">Edit</a>

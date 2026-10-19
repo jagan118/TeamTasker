@@ -1,7 +1,7 @@
 // backend/controllers/todoController.js
 
 const Todo = require('../models/Todo');
-const TeamMember = require('../models/TeamMember');
+const Team = require('../models/Team');
 
 exports.createTodo = async (req, res) => {
   try {
@@ -14,17 +14,10 @@ exports.createTodo = async (req, res) => {
       });
     }
 
-    if (teamId) {
-      const membership = await TeamMember.findOne({
-        teamId,
-        userId: req.user._id
+    if (teamId && !(await Team.exists({ _id: teamId }))) {
+      return res.status(404).json({
+        message: 'Team not found'
       });
-
-      if (!membership) {
-        return res.status(403).json({
-          message: 'Not a member of this team'
-        });
-      }
     }
 
     const todo = await Todo.create({
@@ -33,7 +26,6 @@ exports.createTodo = async (req, res) => {
       dueDate: dueDate || null,
       category: category || '',
       completed: false,
-      user: req.user._id,
       teamId: teamId || null
     });
 
@@ -51,9 +43,7 @@ exports.createTodo = async (req, res) => {
 //  GET ALL TODOS
 exports.getTodos = async (req, res) => {
   try {
-    const todos = await Todo.find({
-      user: req.user._id
-    }).sort({ createdAt: -1 });
+    const todos = await Todo.find().sort({ createdAt: -1 });
 
     res.json({
       data: todos
@@ -74,12 +64,6 @@ exports.getTodoById = async (req, res) => {
     if (!todo) {
       return res.status(404).json({
         message: 'Todo not found'
-      });
-    }
-
-    if (todo.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: 'Unauthorized'
       });
     }
 
@@ -104,13 +88,6 @@ exports.updateTodo = async (req, res) => {
     if (!todo) {
       return res.status(404).json({
         message: 'Todo not found'
-      });
-    }
-
-    // Check authorization
-    if (todo.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: 'Unauthorized'
       });
     }
 
@@ -145,13 +122,6 @@ exports.toggleTodo = async (req, res) => {
       });
     }
 
-    // Check authorization
-    if (todo.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: 'Unauthorized'
-      });
-    }
-
     // Toggle completed
     todo.completed = !todo.completed;
     await todo.save();
@@ -178,13 +148,6 @@ exports.deleteTodo = async (req, res) => {
       });
     }
 
-    // Check authorization
-    if (todo.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({
-        message: 'Unauthorized'
-      });
-    }
-
     await todo.deleteOne();
 
     res.json({
@@ -203,7 +166,6 @@ exports.searchTodos = async (req, res) => {
     const query = req.query.q || '';
 
     const todos = await Todo.find({
-      user: req.user._id,
       $or: [
         { title: { $regex: query, $options: 'i' } },
         { description: { $regex: query, $options: 'i' } }

@@ -2,10 +2,6 @@ const express = require('express');
 const router = express.Router();
 const todoController = require('../controllers/todoController');
 const Todo = require('../models/Todo');
-const TeamMember = require('../models/TeamMember');
-const protect = require('../middlewear/authMiddlewear');
-
-router.use(protect);
 
 // Frontend: this.http.get<{ data: Todo[] }>(`${this.apiUrl}`)
 router.get('/', todoController.getTodos);
@@ -17,15 +13,6 @@ router.get('/search', todoController.searchTodos);
 router.get('/team/:teamId', async (req, res) => {
   try {
     const { teamId } = req.params;
-
-    const membership = await TeamMember.findOne({
-      teamId,
-      userId: req.user._id
-    });
-
-    if (!membership) {
-      return res.status(403).json({ error: 'Not a member of this team' });
-    }
 
     const todos = await Todo.find({ teamId })
       .populate('user', 'name email')

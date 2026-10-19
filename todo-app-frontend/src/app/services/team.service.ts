@@ -3,7 +3,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
-import { AuthService } from './auth.services';
 import { TEAM_API_URL, TODO_API_URL } from '../config/api';
 
 @Injectable({
@@ -13,12 +12,8 @@ export class TeamService {
   
   private apiUrl = TEAM_API_URL;
   teams = signal<any[]>([]);
-  private currentUserCacheKey: string | null = null;
   
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService
-  ) { }
+  constructor(private http: HttpClient) { }
   
   // ========== CREATE TEAM ==========
   createTeam(name: string, description: string): Observable<any> {
@@ -28,15 +23,12 @@ export class TeamService {
     );
   }
   
-  // ========== GET ALL USER'S TEAMS ==========
+  // ========== GET ALL SHARED TEAMS ==========
   getMyTeams(): Observable<any> {
-    const userKey = this.getCurrentUserCacheKey();
-
-    if (this.currentUserCacheKey === userKey && this.teams().length > 0) {
+    if (this.teams().length > 0) {
       return of({ teams: this.teams() });
     }
 
-    this.currentUserCacheKey = userKey;
     this.teams.set([]);
 
     return this.http.get<any>(`${this.apiUrl}/my-teams`).pipe(
@@ -52,13 +44,10 @@ export class TeamService {
   }
 
   saveMyTeams(teams: any[]) {
-    this.currentUserCacheKey = this.getCurrentUserCacheKey();
     this.teams.set(teams.map((team: any) => this.normalizeTeam(team)));
   }
   
   addTeamToCache(team: any) {
-    this.currentUserCacheKey = this.getCurrentUserCacheKey();
-
     const normalizedTeam = this.normalizeTeam(team);
     this.teams.update(list => [normalizedTeam, ...list.filter(existing => existing._id !== normalizedTeam._id)]);
   }
@@ -68,38 +57,18 @@ export class TeamService {
   }
   
   clearMyTeamsCache() {
-    this.currentUserCacheKey = null;
     this.teams.set([]);
   }
   
   // ========== GET TEAM DETAILS + MEMBERS ==========
   getTeamDetails(teamId: string): Observable<any> {
-    // Interceptor will automatically add token
     return this.http.get(
       `${this.apiUrl}/${teamId}`
     );
   }
   
-  // ========== INVITE MEMBER BY EMAIL ==========
-  inviteMember(teamId: string, email: string): Observable<any> {
-    // Interceptor will automatically add token
-    return this.http.post(
-      `${this.apiUrl}/${teamId}/invite`,
-      { email }
-    );
-  }
-  
-  // ========== REMOVE MEMBER FROM TEAM ==========
-  removeMember(teamId: string, userId: string): Observable<any> {
-    // Interceptor will automatically add token
-    return this.http.delete(
-      `${this.apiUrl}/${teamId}/members/${userId}`
-    );
-  }
-  
   // ========== DELETE TEAM ==========
   deleteTeam(teamId: string): Observable<any> {
-    // Interceptor will automatically add token
     return this.http.delete(
       `${this.apiUrl}/${teamId}`
     );
@@ -107,28 +76,17 @@ export class TeamService {
   
   // ========== GET TEAM TODOS ==========
   getTeamTodos(teamId: string): Observable<any> {
-    // Interceptor will automatically add token
     return this.http.get(
       `${TODO_API_URL}/team/${teamId}`
     );
   }
 
-  private getCurrentUserCacheKey(): string {
-    const user = this.authService.currentUser() as any;
-    return (user?._id || user?.id || user?.email || 'anonymous') as string;
-  }
-
   private normalizeTeam(team: any): any {
-    const currentUser = this.authService.currentUser() as any;
-    const currentUserId = currentUser?._id || currentUser?.id || currentUser?.email;
-    const ownerId = team?.owner || team?.ownerId || team?.owner?._id || team?.owner?._id;
-    const isOwner = Boolean(currentUserId && ownerId && String(ownerId) === String(currentUserId));
-
     return {
       ...team,
-      role: team?.role === 'owner' || isOwner ? 'owner' : (team?.role || 'member'),
-      isOwner,
-      ownerId: ownerId || team?.ownerId || null
+      role: 'owner',
+      isOwner: true,
+      ownerId: team?.owner || team?.ownerId || null
     };
   }
 }

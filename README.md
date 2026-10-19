@@ -21,36 +21,15 @@
 - 💾 **Persistent storage** with MongoDB
 
 ### 👥 Team Collaboration (NEW)
-- 🤝 **Create teams** and invite members by email
+- 🤝 **Create shared teams**
 - 📋 **Share todos** within teams for collaborative work
-- 👀 **View permissions** - team members see all shared todos
-- ✏️ **Edit permissions** - all team members can modify team todos
-- 🚀 **Role-based access** - owner vs member roles
-- 👤 **Member management** - add/remove team members
+- 🌍 **Public demo data** - all visitors see the same todos and teams
+- ✏️ **Open editing** - any visitor can add, change, or delete shared data
 
-### 💬 Real-Time Comments
-- 💭 **Add comments** to any todo for discussion
-- 📝 **Edit/delete** your own comments
-- 👤 **User attribution** - see who commented and when
-- 🔄 **Auto-refresh** - see new comments in real-time
-- 📌 **Comment threading** - organized discussion per todo
-
-### 📊 Change History & Audit Log
-- 🔐 **Track all changes** - see who changed what and when
-- 📝 **Change reasons** - users provide context for modifications
-- 🔄 **Complete history** - full audit trail of all edits
-- 👤 **User attribution** - identify who made each change
-- ⏰ **Timestamps** - precise when changes occurred
-- 📋 **Field-level tracking** - track changes to title, description, category, due date, status
-
-### 🔐 Authentication & Security
-- 🔑 **JWT-based authentication** with secure token management
-- 🛡️ **Password hashing** with bcrypt
-- 🍪 **LocalStorage persistence** - stay logged in across sessions
-- ⚔️ **Auth guards** - protected routes
-- 🔒 **Authorization checks** - only authorized users can access resources
-- 🌐 **CORS enabled** - secure cross-origin requests
-- 🚨 **401 error handling** - automatic logout on token expiration
+### ⚠️ Public Demo
+- No login or signup is required.
+- All visitors share one database and can change or delete any demo data.
+- Do not use this deployment for private, personal, or sensitive information.
 
 ### 📱 User Interface
 - 🎨 **Modern, responsive design** - works on desktop, tablet, mobile
@@ -61,9 +40,7 @@
 - 📱 **Mobile-optimized** - touch-friendly interface
 
 ### 🔄 Data Synchronization
-- ⏱️ **Real-time updates** - changes reflect immediately
 - 🔃 **State management** - proper signal-based state in Angular
-- 📲 **HTTP interceptors** - automatic token injection
 - 🌐 **RESTful API** - standard HTTP methods
 
 ---
@@ -89,8 +66,6 @@
 | **Express.js** | 4.18+ | Web framework |
 | **MongoDB** | 5.0+ | NoSQL database |
 | **Mongoose** | 7+ | MongoDB ODM |
-| **JWT** | Latest | Token-based auth |
-| **bcrypt** | 5+ | Password hashing |
 | **CORS** | Latest | Cross-origin support |
 | **dotenv** | Latest | Environment variables |
 
@@ -126,7 +101,6 @@ npm install
 ```env
 PORT=3000
 MONGO_URI=mongodb://localhost:27017/todoapp
-JWT_SECRET=your_secret_key_here
 NODE_ENV=development
 ```
 
@@ -180,44 +154,19 @@ ng build --configuration production
 
 ### Getting Started
 
-1. **Create an account:**
-   - Click "Sign Up"
-   - Enter name, email, password
-   - Account created ✅
-
-2. **Create your first todo:**
-   - Click "My Todos"
+1. **Create your first shared todo:**
+   - Open the public demo
    - Click "Add Todo"
    - Fill in details (title, description, due date, category)
    - Click "Create"
 
-3. **Create a team:**
+2. **Create a shared team:**
    - Click "Teams" in navbar
    - Click "Create Team"
    - Enter team name and description
-   - You're now the team owner ✅
+   - Share todos by assigning them to the team
 
-4. **Invite team members:**
-   - Go to team detail
-   - Click "+ Invite Member"
-   - Enter their email
-   - They can now access team todos
-
-5. **Share a todo with team:**
-   - Create todo
-   - Select team from dropdown
-   - All team members see it
-
-6. **Add comments:**
-   - Open any todo
-   - Scroll to comments section
-   - Type comment and post
-   - Team sees it in real-time
-
-7. **Track changes:**
-   - Open todo
-   - Scroll to "Change History"
-   - See who changed what and why
+All visitors share the same data and can edit or delete it. Do not enter private or sensitive information.
 
 ---
 
@@ -303,84 +252,25 @@ todoapp/
 
 ## 🔌 API Endpoints
 
-### Authentication
-```
-POST   /api/auth/register          # Create new user
-POST   /api/auth/login             # User login
-```
-
-### Todos (Protected)
-```
-GET    /api/todos                  # Get personal todos
-POST   /api/todos                  # Create todo
-GET    /api/todos/:id              # Get single todo
-GET    /api/todos/details/:id      # Get with comments & history
-PUT    /api/todos/:id              # Update todo
-PATCH  /api/todos/:id/toggle       # Toggle complete status
-DELETE /api/todos/:id              # Delete todo
-GET    /api/todos/search           # Search todos
-GET    /api/todos/team/:teamId     # Get team todos
-```
-
-### Comments (Protected)
-```
-POST   /api/todos/:todoId/comments         # Add comment
-GET    /api/todos/:todoId/comments         # Get comments
-DELETE /api/comments/:commentId            # Delete comment
-```
-
-### Teams (Protected)
-```
-POST   /api/teams                          # Create team
-GET    /api/teams/my-teams                 # Get user's teams
-GET    /api/teams/:teamId                  # Get team details
-POST   /api/teams/:teamId/invite           # Invite member
-DELETE /api/teams/:teamId/members/:userId  # Remove member
-DELETE /api/teams/:teamId                  # Delete team
-```
-
----
-
-## 🔐 Authentication Flow
-
-```
-1. User Signup/Login
-   ↓
-2. Backend validates credentials
-   ↓
-3. JWT token generated
-   ↓
-4. Token + User stored in localStorage
-   ↓
-5. Subsequent requests include token via interceptor
-   ↓
-6. Backend verifies token
-   ↓
-7. Request allowed/rejected based on permissions
-   ↓
-8. Token expires → Automatic logout
-```
+See [Api.md](./Api.md) for the current public API routes and request formats. Login/signup and team member management are disabled.
 
 ---
 
 ## 🎨 Features in Action
 
 ### Dashboard
-- Personal todo list with filters
+- Shared todo list with filters
 - Search by category or due date
 - Quick actions (edit, delete, complete)
 
 ### Teams
 - Create and manage teams
-- Invite teammates
-- View all team members and roles
-- Owner can remove members
+- Assign shared todos to teams
+- Any visitor can modify or delete shared teams and todos
 
 ### Collaboration
-- Share todos within teams
-- Comment on todos
-- See real-time comment updates
-- Change history with reasons
+- Shared data is visible to every visitor
+- Team invitations and member management are disabled without accounts
 
 ### Responsive Design
 - Desktop: Full feature set
@@ -391,20 +281,11 @@ DELETE /api/teams/:teamId                  # Delete team
 
 ## 🧪 Testing
 
-### Test User Account
-```
-Email: test@example.com
-Password: test123456
-```
-
 ### Test Scenarios
-1. **Create personal todo** → visible only to you
-2. **Create team** → invite someone
-3. **Share todo with team** → both see it
-4. **Comment on todo** → real-time update
-5. **Edit todo** → change history shows
-6. **Logout & refresh** → session persists
-7. **Delete team** → (owner only)
+1. **Create a todo** → visible to every visitor
+2. **Create a team** → visible to every visitor
+3. **Share a todo with a team** → visible on that team's page
+4. **Edit or delete shared data** → changes affect all visitors
 
 ---
 
@@ -434,8 +315,11 @@ Password: test123456
 
 ---
 
-## 📚 API Documentation
+## Legacy API Examples
 
+The examples in this legacy section may include disabled features. Use [Api.md](./Api.md) for the currently deployed public API.
+
+<!--
 ### Create Todo (Team)
 ```bash
 curl -X POST http://localhost:3000/api/todos \
@@ -468,6 +352,7 @@ curl -X POST http://localhost:3000/api/todos/todo_id/comments \
     "text": "This looks great! Ready to merge."
   }'
 ```
+-->
 
 ---
 

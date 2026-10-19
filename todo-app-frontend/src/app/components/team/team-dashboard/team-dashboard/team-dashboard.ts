@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { TeamService } from '../../../../services/team.service';
-import { AuthService } from '../../../../services/auth.services';
 
 @Component({
   selector: 'app-team-dashboard',
@@ -25,7 +24,6 @@ export class TeamDashboardComponent implements OnInit {
   
   constructor(
     private teamService: TeamService,
-    private authService: AuthService,
     private router: Router
   ) {
     this.teams = this.teamService.teams;
@@ -71,10 +69,8 @@ export class TeamDashboardComponent implements OnInit {
       next: (response) => {
         console.log('✅ Team created:', response.team);
         
-        // Add new team to list and mark current user as owner
         this.teamService.addTeamToCache({
           ...response.team,
-          owner: response.team?.owner || this.authService.currentUser()?._id,
           role: 'owner',
           isOwner: true
         });
