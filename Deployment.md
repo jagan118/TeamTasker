@@ -33,7 +33,7 @@ This guide covers deploying TodoApp to production environments.
 
 ### Backend Environment Variables
 
-Create `.env` file with production values:
+Legacy environment-variable example for local development only; set production secrets in the Vercel project settings below:
 
 ```env
 # Server
@@ -48,7 +48,7 @@ JWT_SECRET=your-very-long-random-secret-key-min-32-chars-!@#$%^&*()
 JWT_EXPIRY=7d
 
 # CORS
-FRONTEND_URL=https://team-tasker-byvc.vercel.app
+FRONTEND_URL=http://localhost:4200
 
 # Email
 SMTP_HOST=smtp.gmail.com
@@ -57,7 +57,7 @@ SMTP_USER=noreply@yourdomain.com
 SMTP_PASS=your-app-password
 
 # URLs
-FRONTEND_URL=https://team-tasker-byvc.vercel.app
+FRONTEND_URL=http://localhost:4200
 BACKEND_URL=https://api.yourdomain.com
 
 # Logging
@@ -67,20 +67,19 @@ SENTRY_DSN=https://your-sentry-url
 
 ### Vercel Project Settings
 
-Create separate Vercel projects for the frontend and backend. Set the frontend project's **Root Directory** to `todo-app-frontend` and the backend project's **Root Directory** to `todo-app-backend`.
+Import this repository as a **single Vercel project** and keep its **Root Directory** at the repository root. The root `vercel.json` independently builds the frontend and backend services.
 
-In the backend project's **Settings → Environment Variables**, add these for Production (and Preview too if you use preview deployments):
+The rewrites make `todo-app-backend` public under `/api/*` and `todo-app-frontend` public for all other paths. In the Vercel project's **Settings → Environment Variables**, set `MONGO_URI` to your MongoDB connection string and `JWT_SECRET` to a new random secret of at least 32 characters, for Production and any Preview environments you use.
 
 | Name | Value |
 | --- | --- |
 | `MONGO_URI` | Your MongoDB Atlas connection string |
 | `JWT_SECRET` | A new, random secret with at least 32 characters |
-| `FRONTEND_URL` | `https://team-tasker-byvc.vercel.app` |
-| `NODE_ENV` | `production` |
+| `FRONTEND_URL` | Only needed for separately hosted cross-origin frontend clients |
 
-Do not commit secrets or add them to the frontend project. Make sure MongoDB Atlas permits connections from Vercel. After saving the variables, redeploy the backend.
+Do not commit secrets. Make sure MongoDB Atlas permits connections from Vercel, then redeploy the project. Vercel supplies `NODE_ENV`.
 
-The frontend uses `https://team-tasker-five.vercel.app/api` as its production API URL and needs no Vercel environment variable. Angular development mode continues to use `http://localhost:3000/api`. The backend deployment should respond at `https://team-tasker-five.vercel.app/`.
+The browser calls `/api` on the same domain, so no backend binding is used; the API must remain publicly routed. The frontend needs no API URL environment variable: it uses `/api` in production and `http://localhost:3000/api` in Angular development mode.
 
 ### Frontend Environment
 
