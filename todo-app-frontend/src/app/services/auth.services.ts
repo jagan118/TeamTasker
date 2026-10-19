@@ -5,12 +5,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { User, AuthResponse } from '../models/interface';
+import { AUTH_API_URL } from '../config/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/auth';
+  private apiUrl = AUTH_API_URL;
 
   // Inject PLATFORM_ID to check if running in browser
   private platformId = inject(PLATFORM_ID);

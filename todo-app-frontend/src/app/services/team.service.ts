@@ -4,13 +4,14 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import { AuthService } from './auth.services';
+import { TEAM_API_URL, TODO_API_URL } from '../config/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamService {
   
-  private apiUrl = 'http://localhost:3000/api/teams';
+  private apiUrl = TEAM_API_URL;
   teams = signal<any[]>([]);
   private currentUserCacheKey: string | null = null;
   
@@ -108,7 +109,7 @@ export class TeamService {
   getTeamTodos(teamId: string): Observable<any> {
     // Interceptor will automatically add token
     return this.http.get(
-      `http://localhost:3000/api/todos/team/${teamId}`
+      `${TODO_API_URL}/team/${teamId}`
     );
   }
 

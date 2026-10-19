@@ -48,7 +48,7 @@ JWT_SECRET=your-very-long-random-secret-key-min-32-chars-!@#$%^&*()
 JWT_EXPIRY=7d
 
 # CORS
-CORS_ORIGIN=https://yourdomain.com
+FRONTEND_URL=https://team-tasker-byvc.vercel.app
 
 # Email
 SMTP_HOST=smtp.gmail.com
@@ -57,13 +57,30 @@ SMTP_USER=noreply@yourdomain.com
 SMTP_PASS=your-app-password
 
 # URLs
-FRONTEND_URL=https://yourdomain.com
+FRONTEND_URL=https://team-tasker-byvc.vercel.app
 BACKEND_URL=https://api.yourdomain.com
 
 # Logging
 LOG_LEVEL=info
 SENTRY_DSN=https://your-sentry-url
 ```
+
+### Vercel Project Settings
+
+Create separate Vercel projects for the frontend and backend. Set the frontend project's **Root Directory** to `todo-app-frontend` and the backend project's **Root Directory** to `todo-app-backend`.
+
+In the backend project's **Settings → Environment Variables**, add these for Production (and Preview too if you use preview deployments):
+
+| Name | Value |
+| --- | --- |
+| `MONGO_URI` | Your MongoDB Atlas connection string |
+| `JWT_SECRET` | A new, random secret with at least 32 characters |
+| `FRONTEND_URL` | `https://team-tasker-byvc.vercel.app` |
+| `NODE_ENV` | `production` |
+
+Do not commit secrets or add them to the frontend project. Make sure MongoDB Atlas permits connections from Vercel. After saving the variables, redeploy the backend.
+
+The frontend uses `https://team-tasker-five.vercel.app/api` as its production API URL and needs no Vercel environment variable. Angular development mode continues to use `http://localhost:3000/api`. The backend deployment should respond at `https://team-tasker-five.vercel.app/`.
 
 ### Frontend Environment
 
