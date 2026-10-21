@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const todoController = require('../controllers/todoController');
 const Todo = require('../models/Todo');
+const User = require('../models/User');
+const Team = require('../models/Team');
 
 // Frontend: this.http.get<{ data: Todo[] }>(`${this.apiUrl}`)
 router.get('/', todoController.getTodos);

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Team = require('../models/Team');
 const Todo = require('../models/Todo');
+const User = require('../models/User');
 
 router.post('/', async (req, res) => {
   try {

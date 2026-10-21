@@ -2,9 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+dotenv.config();
+
+// Ensure all Mongoose models are registered
+require('./models/User');
+require('./models/Team');
+require('./models/Todo');
+require('./models/TeamMember');
+
 const todoRoutes = require('./routes/todoRoutes');
 const teamRoutes = require('./routes/teamRoutes');
-dotenv.config();
 
 const connectDB = require('./config/db');
 
