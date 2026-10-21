@@ -1,27 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "todo-app-backend": {
-      "root": "todo-app-backend",
-      "framework": "express"
-    },
-    "todo-app-frontend": {
-      "root": "todo-app-frontend",
-      "framework": "angular"
-    }
-  },
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": {
-        "service": "todo-app-backend"
-      }
-    },
-    {
-      "source": "/(.*)",
-      "destination": {
-        "service": "todo-app-frontend"
-      }
+      "source": "/api/:path*",
+      "destination": "https://team-tasker-ashen.vercel.app/api/:path*"
     }
   ]
 }
